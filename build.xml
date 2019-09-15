@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<!DOCTYPE project>
+<project name="WebService" default="build_workspace" basedir="." >
+
+	<property file="build.properties"/> 
+	
+	<target name="preClear">
+		<delete dir="${build.build_temp_path}/${build.workspace.name}"/>
+		<delete dir="${build.build_path}/${build.workspace.name}"/>
+		<delete dir="${build.build_path}/${build.workspace.name}/${build.project.configs}"/>
+	</target>
+	
+	<target name="postClear">
+		<delete dir="${build.build_temp_path}/${build.workspace.name}"/>
+	</target>
+	
+	<target name="build_workspace">
+		<antcall target="preClear"/>
+		<ant antfile="./${workspace.DocumentService.web.name}/build.xml" target="build_war"/>
+		<mkdir dir="${build.build_path}/${build.workspace.name}/${build.project.configs}"/>
+		<copy todir="${build.build_path}/${build.workspace.name}/${build.project.configs}">
+			<fileset dir="${build.project.configs}"/>
+		</copy>		
+		<antcall target="postClear"/>		
+	</target>
+	
+
+</project>
+

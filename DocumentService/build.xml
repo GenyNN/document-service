@@ -1,0 +1,106 @@
+<project name="WebService" default="build_war" basedir="." >
+	
+	<property name="project.name" value="DocumentService"/>
+	
+	<property name="project.src" value="/src"/>
+	<property name="project.srcfullpath" value="./${project.name}/${project.src}"/>
+	<property name="project.WebContent" value="/WebContent"/>
+	<property name="project.webinf" value="/WEB-INF"/>
+	<property name="project.classes" value="/classes"/>
+	<property name="project.lib" value="/lib"/>		
+	<property name="project.metainf" value= "/META-INF"/>
+	<property name="project.descriptor" value="web.xml"/>
+
+	<path id="lib.runtime">		
+	</path>
+
+	
+	
+	<path id="libs.import">
+		<pathelement location="${java.classpath}/aqapi-11.1.1.2.0.jar"/>
+		<pathelement location="${java.classpath}/common-6.0.2.3.jar"/>
+		<pathelement location="${java.classpath}/commonservices-6.0.2.3.jar"/>
+		<pathelement location="${java.classpath}/internal-6.0.2.3.jar"/>
+		<pathelement location="${java.classpath}/javaee-api-5.0-1.jar"/>
+		<pathelement location="${java.classpath}/jcifs-1.3.3.jar"/>
+		<pathelement location="${java.classpath}/jmqi-6.0.2.3.jar"/>
+		<pathelement location="${java.classpath}/jms-6.0.2.3.jar"/>
+		<pathelement location="${java.classpath}/jmscommon.jar"/>
+		<pathelement location="${java.classpath}/mq-6.0.2.3.jar"/>
+		<pathelement location="${java.classpath}/mqjms-6.0.2.3.jar"/>
+		<pathelement location="${java.classpath}/ojdbc5-11.1.0.7.0.jar"/>
+		<pathelement location="${java.classpath}/provider-6.0.2.3.jar"/>
+		<pathelement location="${java.classpath}/v6-6.0.2.3.jar"/>
+		<pathelement location="${java.classpath}/wmq-6.0.2.3.jar"/>
+		<pathelement location="${java.classpath}/wsdl4j-1.6.2.jar"/>
+		<pathelement location="${java.classpath}/xercesImpl-2.10.0.jar"/>
+		<pathelement location="${java.classpath}/xml-apis-1.4.01.jar"/>
+		<pathelement location="${java.classpath}/headers-6.0.2.3.jar"/>
+		<pathelement location="${java.classpath}/log4j-1.2.17.jar"/>
+    </path>	
+	
+    <pathconvert pathsep="${line.separator}" property="echo.path.compile" refid="libs.import"/>
+	<pathconvert pathsep="," property="filelist.path" refid="libs.import"/>
+	<property name="DocumentService.needlibs.import" refid="libs.import"/>	
+	
+	<target name="prepare">			
+		<echo message="create environment for war"/>
+		<mkdir dir="${build.build_temp_path}/${build.workspace.name}/${project.name}"/>
+		<mkdir dir="${build.build_temp_path}/${build.workspace.name}/${project.name}/${build.struct.web.metainf}"/>
+		<mkdir dir="${build.build_temp_path}/${build.workspace.name}/${project.name}/${build.struct.web.webinf}"/>
+		<mkdir dir="${build.build_temp_path}/${build.workspace.name}/${project.name}/${build.struct.web.webinf.classes}"/>
+		<mkdir dir="${build.build_temp_path}/${build.workspace.name}/${project.name}/${build.struct.web.webinf.lib}"/>
+		
+		<echo message="${build.build_temp_path}/${build.workspace.name}/${project.name}/${build.struct.web.webinf.lib}"/>
+		<echo message="${java.classpath}"/>
+		<copy todir="${build.build_temp_path}/${build.workspace.name}/${project.name}/${build.struct.web.webinf.lib}">
+			<filelist dir="${java.classpath}" files="${filelist.path}"/>
+		</copy>
+		
+		<echo message="copy META-INF"/>
+		<copy todir="${build.build_temp_path}/${build.workspace.name}/${project.name}/${build.struct.web.metainf}">
+			<fileset dir="./${project.name}/${project.WebContent}/${project.metainf}"/>
+		</copy>
+		
+		<echo message="copy xml"/>
+		<copy todir="${build.build_temp_path}/${build.workspace.name}/${project.name}/${build.struct.web.webinf}" flatten="true">
+			<resources>
+				 <file file="./${project.name}/${project.WebContent}/${project.webinf}/${project.descriptor}"/>
+			</resources>
+		</copy>
+		
+		<echo message="copy other stuff"/>
+		<copy todir="${build.build_temp_path}/${build.workspace.name}/${project.name}/${build.struct.web.webinf.classes}">
+			<fileset dir="${project.srcfullpath}" excludes="**/*.java"/>
+		</copy>
+	</target>
+	
+	<target name="compile">	
+		<javac srcdir="${project.srcfullpath}" 
+			   destdir="${build.build_temp_path}/${build.workspace.name}/${project.name}/${build.struct.web.webinf.classes}" 
+			   classpathref="libs.import"
+			   compiler="${javac.compiler}"
+			   includeAntRuntime="${javac.includeAntRuntime}"
+			   includeJavaRuntime="${javac.includeJavaRuntime}"
+			   fork="${javac.fork}"
+			   deprecation="${deprecation}"
+			   debug="on">
+			<compilerarg value="${javac.compilerarg.xlint}"/>
+		</javac>
+	</target>	
+	
+	<target name="build_war_package">
+		<war destfile="${build.build_path}/${build.workspace.name}/${project.name}.war" needxmlfile="true">
+			<fileset dir="${build.build_temp_path}/${build.workspace.name}/${project.name}" excludes="*build*.xml"/>
+		</war>		
+	</target>
+	
+	<target name="build_war" depends="prepare">
+		<echo>${echo.path.compile}</echo>
+		<antcall target="compile"/>	
+		<antcall target="build_war_package"/>
+	</target>
+
+
+</project>
+

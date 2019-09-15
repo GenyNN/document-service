@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<BSSConfig>
+	<docserv enable = "true">
+		<Listener>
+			<Type>STANDART</Type>
+			<PoolMin>1</PoolMin>
+			<Transport>
+				<Type>INPUT</Type>
+				<QuantityRead>5</QuantityRead>
+				<Sources>
+					<Source>
+						<SRC_DIR>C:\DocumentService\input</SRC_DIR>
+						<SRC_PRIOR>5</SRC_PRIOR>
+						<ARCHIVE_SRC_DIR>C:\DocumentService\arch_input</ARCHIVE_SRC_DIR>
+						<ERROR_DIR>C:\DocumentService\listener_error</ERROR_DIR>
+						<INTERVAL>7000</INTERVAL>
+						<QUANT_TO_SEND>2</QUANT_TO_SEND>
+					</Source>
+					<Source>
+						<SRC_DIR>C:\DocumentService\inputS2</SRC_DIR>
+						<SRC_PRIOR>1</SRC_PRIOR>
+						<ARCHIVE_SRC_DIR>C:\DocumentService\arch_inputS2</ARCHIVE_SRC_DIR>
+						<ERROR_DIR>C:\DocumentService\listener_errorS2</ERROR_DIR>
+						<INTERVAL>100</INTERVAL>
+						<QUANT_TO_SEND>2</QUANT_TO_SEND>
+					</Source>
+				</Sources>
+			</Transport>
+		</Listener>
+		<Sender>
+			<Type>STANDART_DATASEND</Type>
+			<PoolMin>1</PoolMin>
+			<Transport>
+				<Type>OUTPUT</Type>
+				<TARGET_DIR>C:\DocumentService\target</TARGET_DIR>
+				<ARCHIVE_TARGET_DIR>C:\DocumentService\arch_target</ARCHIVE_TARGET_DIR>
+				<ERROR_DIR>C:\DocumentService\sender_error</ERROR_DIR>
+			</Transport>
+		</Sender>
+		<QueueListenerToProcess>
+			<Max>1</Max>
+		</QueueListenerToProcess>
+		<QueueProcessToSender>
+			<Max>1</Max>
+		</QueueProcessToSender>
+		<Process>
+			<Type>STANDART</Type>
+			<PoolMin>1</PoolMin>
+			<Transport>
+				<Host>192.168.183.143</Host>
+				<Port>25</Port>
+				<UserName>ushakov@teleformis.ru</UserName>
+				<Password>EU11*mug</Password>
+				<ERROR_DIR>C:\DocumentService\process_error</ERROR_DIR>
+				<emailFrom>valisy@mail.com</emailFrom>
+				<nameFrom>Vasily Pupkin</nameFrom>
+			</Transport>
+		</Process>	
+	</docserv>
+	
+</BSSConfig>

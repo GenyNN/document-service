@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee   http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+ <servlet>
+  <description>This is the description for the sample servlet</description>
+  <servlet-name>MainServlet</servlet-name>
+  <servlet-class>bss.ServiceDocument.Main.MainServlet</servlet-class>
+  <init-param>
+   <param-name>AccessType</param-name>
+   <param-value>LOCAL</param-value>
+  </init-param>
+  <init-param>
+   <param-name>SettingFullFileName</param-name>
+   <param-value>C:\Projectz\DocumentService\documentservice_configs\BSSServiceExx.xml</param-value>
+  </init-param>
+  <load-on-startup>1</load-on-startup>
+ </servlet>
+ <servlet-mapping>
+  <servlet-name>MainServlet</servlet-name>
+  <url-pattern>/myservlet/main</url-pattern>
+ </servlet-mapping>
+</web-app>
